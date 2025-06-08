@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #efefef;
+}
+
+.app__container {
+    margin-top: -10vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 40vw;
+
+    background: #FCFCFC;
+    padding: .5em;
+
+    gap: 1em;
+}
+
+.app__container .notes__container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    text-align: left;
+
+    gap: 1em;
+    width: 95%;
+}
+
+.app__container .field__container .note-content__container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.app__container .field__container .buttons__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app__container .field__container .buttons__container img#settings-icon {
+    width: 5%;
+    cursor: pointer;
+}
