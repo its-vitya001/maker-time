@@ -3,53 +3,39 @@
     padding: 0;
 }
 
+:root {
+    --primary-blue: #26547C;
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
     background: #efefef;
 }
 
-.app__container {
-    margin-top: -10vh;
+/* -- welcome screen -- */
+
+#welcome-screen {
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 40vw;
-
-    background: #FCFCFC;
-    padding: .5em;
-
-    gap: 1em;
+    font-size: 1.3rem;
 }
 
-.app__container .notes__container {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    text-align: left;
-
-    gap: 1em;
-    width: 95%;
-}
-
-.app__container .field__container .note-content__container {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.app__container .field__container .buttons__container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.app__container .field__container .buttons__container img#settings-icon {
-    width: 5%;
+#welcome-screen button#welcome-screen-start-btn {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: .8em 3em;
+    border-radius: 999px;
+    border: none;
     cursor: pointer;
+    margin-top: 1.8em;
+    font-size: 1rem;
+}
+
+#app {
+    opacity: 0;
 }

@@ -8,63 +8,19 @@
     <title>Maker time | Note app</title>
 </head>
 <body>
-    <div class="app__container">
-        <h1>Notes app</h1>
-        <div class="notes__container">
-            <table>
-
-                <tr>
-                    <td>
-                        <h3>Note heading</h3>
-                        <hr>
-                        <p>Main text...</p>
-                        <p>time when created</p>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <h3>Note heading</h3>
-                        <hr>
-                        <p>Main text...</p>
-                        <p>time when created</p>
-                    </td>
-                </tr>
-
-            </table>
-        </div>
-
-        <div class="field__container">
-
-            <div class="note-content__container">
-                <input type="text" id="" placeholder="Note heading">
-                <textarea type="text" id="" placeholder="Note text"></textarea>
+    <div class="wrapper">
+        <div id="welcome-screen">
+            <div class="heading-text">
+                <h1>Welcome, user !</h1>
+                <h4>Ready to take notes ?</h4>
             </div>
-
-            <div class="buttons__container">
-                <button>Create note</button>
-                <img src="./assets/settings.svg" id="settings-icon" alt="*settings*">
-            </div>
-
-            <!-- <div class="filed__mode-container"> <== settings menu feature
-                <label for="mode">Mode:</label>
-                <select name="mode">
-                    <option>Removing</option>
-                    <option>Archiving</option>
-                </select>
-            </div> -->
-
+            <button id="welcome-screen-start-btn">Start writing</button>
         </div>
+        <main id="app">
+            <h1>Note app</h1>
+        </main>
+
     </div>
     <script src="./script.js"></script>
 </body>
 </html>
-
-<!-- rules:
-
-
-notes ui > field ui 
-
-
-
--->
