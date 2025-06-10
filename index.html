@@ -9,16 +9,25 @@
 </head>
 <body>
     <div class="wrapper">
-        <div id="welcome-screen">
-            <div class="heading-text">
-                <h1>Welcome, user !</h1>
-                <h4>Ready to take notes ?</h4>
+
+        <div id="welcome-screen-container">
+            <div id="welcome-screen">
+                <div class="heading-text">
+                    <h1>Welcome, user !</h1>
+                    <h4>Ready to take notes ?</h4>
+                </div>
+                <button id="welcome-screen-start-btn">Start writing</button>
             </div>
-            <button id="welcome-screen-start-btn">Start writing</button>
         </div>
-        <main id="app">
-            <h1>Note app</h1>
-        </main>
+
+        <div id="app">
+            <div class="sidebar">
+                <img src="./assets/burger-menu.svg" alt="menu" id="burger-menu-icon">
+                <div class="content">
+                    <h1>Some text</h1>
+                </div>
+            </div>
+        </div>
 
     </div>
     <script src="./script.js"></script>
