@@ -1,4 +1,7 @@
 $("#app").hide();
+$("#sidebar-content").hide()
+$(".burger-btn").hide()
+$("#overlays").hide()
 
 let isFirstVisit = !Boolean(localStorage.getItem("isFirstVisit"));
 console.log(isFirstVisit);
@@ -33,12 +36,47 @@ $(document).ready(() => {
      $("#burger-menu-icon").click(() => {
         isSideBarOpen = !isSideBarOpen;
         if (isSideBarOpen) {
-            $(".sidebar").animate({width: "30vw"}, 400, () => {})
-            setTimeout(() => {
-                $(".content").show()
-            }, 200);
+            $(".burger-btn").show()
+            $(".burger-btn").animate({opacity: 1}, 200, ()=>{})
+
+            $("#sidebar-content").show()
+            $("#sidebar").animate({width: "20vw"}, 400, ()=>{})
+            $("#sidebar-content").animate({opacity: 1}, 450, ()=>{})
         } else {
-            $(".sidebar").animate({width: "0"}, 400, () => {$(".content").hide()})
+            $(".burger-btn").animate({opacity: 0}, 200, ()=>{$(".burger-btn").hide()})
+
+            $("#sidebar").animate({width: "3em"}, 400, ()=>{})
+            $("#sidebar-content").animate({opacity: 0}, 200, ()=>{$("#sidebar-content").hide()})
         }
      })
+     
+     // --- note creating ---
+    $("#overlays").keydown((event) => {
+        if (event.key === "Enter") {
+            const noteName = $("#note-name").val().trim()
+
+            if (noteName === "") return
+
+            $("#note-name-pop-up").animate({opacity: "0"}, 100, () => {
+                $("#note-name-pop-up").hide()
+            })
+            $("#overlays").animate({opacity: "0"}, 100, () => {
+                $("#overlays").hide()
+
+                $("#sidebar-content").append(`
+                    <div class="note" id="${noteName}">
+                        <p>${noteName}</p>
+                        <button class="note-btn">...</button>
+                    </div>
+                `)
+
+                $("#note-name").val("")
+            })
+        }
+    })
+
+    $("#add-note-btn").click(() => {
+        $("#overlays").show().css("opacity", 0).animate({opacity: "1"}, 100)
+        $("#note-name-pop-up").show().css("opacity", 0).animate({opacity: "1"}, 100)
+    })
 });
