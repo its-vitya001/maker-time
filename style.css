@@ -33,6 +33,68 @@ body {
     z-index: 999;
 }
 
+#overlays #note-menu-pop-up {
+    position: absolute;
+    background-color: white;
+    width: 15em;
+    margin: 0 auto;
+    text-align: center;
+    padding: 1em;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .4em;
+    opacity: 0;
+    z-index: 999;
+}
+
+#overlays #note-menu-pop-up button {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+#overlays #note-menu-pop-up button#archive-note-btn {
+    background-color: rgba(38, 84, 124, 0.8);
+    color: white;
+    border-radius: 999px;
+    border: none;
+    width: 50%;
+    padding: .25em 0;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+#overlays #note-menu-pop-up button#delete-note-btn {
+    color: #EF476F;
+    border: none;
+    background: none;
+}
+
+#overlays #note-menu-pop-up hr {
+    width: 90%;
+    margin: 0 auto;
+}
+
+#overlays #note-menu-pop-up button#close-btn {
+    position: absolute;
+    margin-right: auto;
+    background: none;
+    font-size: 1.2rem;
+    border: none;
+}
+
+.elem{
+    background-color: #26547C;
+    background-color: #EF476F;
+    background-color: #FFD166;
+    background-color: #06d6a0;
+    background-color: #FCFCFC;
+}
+
+
 #overlays #note-name-pop-up input {
     width: 100%;
     height: 100%;
@@ -148,13 +210,28 @@ body {
 
 #app #main {
     background: #efefef;
+    display: flex;
     width: 100vw;
     height: 100vh;
-    display: flex;
-    justify-content: left;
+}
+
+#app #main #main-workspace {
+    background: #efefef;
+    /* width: 100vw;
+    height: 100vh; */
 }
 
 #app #main #main-content {
     display: block;
     padding: 1em;
+}
+
+#welcome-workspace-text-container {
+    margin: 0 auto;
+}
+
+#welcome-workspace-text-container h1 {
+    text-align: center;
+    font-size: 3rem;
+    transform: translate(calc(50vw - 3rem - 3em), calc(50vh - 3rem));
 }
