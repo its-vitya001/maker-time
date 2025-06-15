@@ -65,7 +65,7 @@ body {
     border-radius: 999px;
     border: none;
     width: 50%;
-    padding: .25em 0;
+    padding: .5em 0;
     font-size: 0.9rem;
     cursor: pointer;
 }
@@ -157,9 +157,12 @@ body {
     padding: .5em;
 }
 
+/* --- burger --- */
+
 #app #sidebar #burger {
     display: flex;
     gap: .5em;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.25);
 }
 
 #app #sidebar #burger .burger-btn {
@@ -191,6 +194,7 @@ body {
     gap: 1vh;
     overflow-y: auto;
     scrollbar-width: none;
+    margin-top: 2vh;
 }
 
 #app #sidebar #sidebar-content .note {
@@ -203,6 +207,17 @@ body {
     cursor: pointer;
     display: flex;
     align-items: center;
+}
+
+#app #sidebar #sidebar-content .note[data-archived] {
+    border: solid 1px black;
+    background: none;
+    transform: scale(0.99);
+    opacity: .15;
+}
+
+#app #sidebar #sidebar-content .note[data-archived] p.sidebar-note-name {
+    text-decoration: line-through;
 }
 
 #app #sidebar #sidebar-content .note button.note-btn {
@@ -224,8 +239,6 @@ body {
 
 #app #main #main-workspace {
     background: #efefef;
-    /* width: 100vw;
-    height: 100vh; */
     padding: 2vh 2vw 1vh 2vw;
 }
 
@@ -233,10 +246,11 @@ body {
     margin-top: 2vh;
 }
 
-/* #app #main #main-content {
-    display: block;
-    padding: 1em;
-} */
+#app #main #main-workspace div p.note-main-text:focus,
+#app #main #main-workspace div h1.note-heading:focus {
+    outline: none;
+    text-decoration: underline;
+}
 
 #welcome-workspace-text-container {
     margin: 0 auto;

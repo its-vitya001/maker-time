@@ -6,19 +6,17 @@ $("#overlays").hide()
 $("#note-name-pop-up").hide()
 $("#note-menu-pop-up").hide()
   
-// !--- Test varibales & logs zone ---! 
 let notes_list_arr  = [];
 
+// --- functions --- 
 function renderSidebarNotes() {
-    $("#sidebar-content").empty(); // очистить
+    $("#sidebar-content").empty();
 
     for (let note of notes_list_arr) {
         const archivedStyles = note.isArchived
-            ? 'style="background: none; border: solid 1px lightgray; text-decoration: line-through; color: gray;"'
-            : '';
 
         $("#sidebar-content").append(`
-            <div class="note" data-note-name="${note.name}" ${archivedStyles}>
+            <div class="note" data-note-name="${note.name}" ${note.isArchived?"data-archived":""}>
                 <p class="sidebar-note-name">${note.name}</p>
                 <button class="note-btn">...</button>
             </div>
@@ -30,10 +28,28 @@ function saveNotesToLocalStorage() {
     localStorage.setItem("notes", JSON.stringify(notes_list_arr));
 }
 
+function generateRgbByDate () {
+    let date = new Date()
+    let randomChoise = [
+        date.getHours(), date.getSeconds(), date.getMinutes(),
+        date.getMonth(), date.getDay(), date.getDate()
+    ]
+    function randomValue () {
+        let n1 = randomChoise[Math.floor(Math.random()*randomChoise.length)]
+        let n2 = randomChoise[Math.floor(Math.random()*randomChoise.length)]
+        let n3 = randomChoise[Math.floor(Math.random()*randomChoise.length)]
+        return (n1+n2+n3)/3
+    }
+    return `
+        ${randomValue()*(Math.floor(Math.random()*128)/2)},
+        ${randomValue()*(Math.floor(Math.random()*128)/2)},
+        ${randomValue()*(Math.floor(Math.random()*128)/2)}
+    `
+}
 
+// --- welcome screen hidding --- 
 
 let isFirstVisit = !Boolean(localStorage.getItem("isFirstVisit"));
-console.log(isFirstVisit);
 
 if (!isFirstVisit) {
     $("#welcome-screen-container").hide();
@@ -60,14 +76,14 @@ $(document).ready(() => {
         });
     }
 
-    // notes loading from local storage
+    // --- notes loading from local storage ---
     const savedNotes = localStorage.getItem("notes");
     if (savedNotes) {
         notes_list_arr = JSON.parse(savedNotes);
         renderSidebarNotes();
     }
 
-    // --- sidebar ---
+    // --- burger menu animation ---
     let isSideBarOpen = false
      $("#burger-menu-icon").click(() => {
         isSideBarOpen = !isSideBarOpen;
@@ -86,8 +102,8 @@ $(document).ready(() => {
         }
      })
      
-     // --- note creating ---
-     $("#add-note-btn").click(() => {
+    // --- note creating ---
+    $("#add-note-btn").click(() => {
         $("#overlays").show().css("opacity", 0).animate({opacity: "1"}, 100)
         $("#note-name-pop-up").show().css("opacity", 0).animate({opacity: "1"}, 100)
     })
@@ -97,7 +113,10 @@ $(document).ready(() => {
         if (event.key === "Enter") {
             noteName = $("#note-name-inp").val().trim()
 
-            if (noteName === "") return
+            if (noteName === "" || noteName.match(/[0-9]/)) {
+                alertify.error("invalid name !")
+                return
+            }
 
             $("#note-name-pop-up").animate({opacity: "0"}, 100, () => {
                 $("#note-name-pop-up").hide()
@@ -107,21 +126,22 @@ $(document).ready(() => {
                 $("#overlays").hide()
 
                 let date = new Date()
-                const weekdaysName = [null, 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                const monthNames = [null, 
+                const weekdaysName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                const monthNames = [
                     "January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"
                 ];
+
                 notes_list_arr.push({
                     name: noteName,
-                    text: "your text",
+                    text: "...",
                     dateWhenCreated: `${weekdaysName[date.getDay()]} ${date.getDate()} ${monthNames[date.getMonth()]}`,
                     timeWhenCreated: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
                     isArchived: false,
                 });
 
                 renderSidebarNotes();
-                saveNotesToLocalStorage(); // <--- ✅ ДОБАВЬ ЭТО
+                saveNotesToLocalStorage();
 
                 console.log(notes_list_arr);
 
@@ -130,9 +150,7 @@ $(document).ready(() => {
         }
     })
 
-    
-
-    // --- notes removing & archiving ---
+    // --- notes deleting & archiving ---
     $(document).on("click", ".note-btn", function (event) {
         event.stopPropagation();
 
@@ -145,7 +163,6 @@ $(document).ready(() => {
 
         if (!note) return;
 
-        // Синхронизируем кнопку с текущим состоянием
         if (note.isArchived) {
             $("#archive-note-btn").text("unarchive").css("background", "rgb(207, 207, 207)");
         } else {
@@ -154,7 +171,7 @@ $(document).ready(() => {
 
         $("#archive-note-btn").off("click").on("click", () => {
             note.isArchived = !note.isArchived;
-            renderSidebarNotes(); // Перерисовать с актуальным стилем
+            renderSidebarNotes();
             saveNotesToLocalStorage(); 
 
             $("#note-menu-pop-up").animate({opacity: "0"}, 100, () => {
@@ -174,32 +191,27 @@ $(document).ready(() => {
             });
         });
 
-            // обработчик кнопки удаления
-    $("#delete-note-btn").off("click").on("click", () => {
-            // 1. найти индекс заметки
-        const index = notes_list_arr.findIndex(n => n.name === noteName);
+        $("#delete-note-btn").off("click").on("click", () => {
+            const index = notes_list_arr.findIndex(n => n.name === noteName);
 
-        if (index !== -1) {
-            notes_list_arr.splice(index, 1); // 2. удалить из массива
-            renderSidebarNotes();            // 3. перерисовать список
-            saveNotesToLocalStorage(); 
-        }
+            if (index !== -1) {
+                notes_list_arr.splice(index, 1);
+                renderSidebarNotes();
+                saveNotesToLocalStorage(); 
+            }
 
-            // 4. закрыть попап
-        $("#note-menu-pop-up").animate({opacity: "0"}, 100, () => {
-            $("#note-menu-pop-up").hide();
-            $("#overlays").animate({opacity: "0"}, 100, () => {
-                $("#overlays").hide();
+            $("#note-menu-pop-up").animate({opacity: "0"}, 100, () => {
+                $("#note-menu-pop-up").hide();
+                $("#overlays").animate({opacity: "0"}, 100, () => {
+                    $("#overlays").hide();
+                });
             });
-        });
 
+        });
     });
-});
 
 
     // --- note content creating ---
-    
-    // Клик по заметке — отрисовка в рабочей области
     $(document).on('click', '.note', function () {
         const noteName = $(this).attr("data-note-name");
         const note = notes_list_arr.find(n => n.name === noteName);
@@ -208,19 +220,19 @@ $(document).ready(() => {
             console.warn(`Нет заметки с именем "${noteName}"`);
             return;
         }
-    
+        
         $("#main-workspace").html(`
             <div>
                 <h1 class="note-heading" contenteditable="true" data-old-name="${note.name}">${note.name}</h1>
                 <p class="note-main-text" contenteditable="true">${note.text}</p>
-                <p class="note-creation-date">
+                <p class="note-creation-date" style="background: rgba(${generateRgbByDate()}, 0.5)">
                     Note creation date: ${note.dateWhenCreated}, at ${note.timeWhenCreated}
                 </p>
             </div>
         `);
     });
 
-    // reading / editing mode 
+    // --- reading / editing mode --- 
     let isEditingMode = true;
     $("#note-viewing-mode").click(function () {
         isEditingMode = !isEditingMode
@@ -263,7 +275,7 @@ $(document).ready(() => {
         const $text = $(this);
         const newText = $text.html().trim();
 
-        const noteName = $(".note-heading").data("old-name").trim(); // имя из заголовка
+        const noteName = $(".note-heading").data("old-name").trim();
         const note = notes_list_arr.find(n => n.name === noteName);
 
         if (note) {
@@ -272,4 +284,18 @@ $(document).ready(() => {
             console.log(`Текст заметки "${noteName}" обновлен:\n${newText}`);
         }
     });
+
 });
+
+
+
+
+
+// wtf 
+
+function contrastLvl () {
+    let bgColor =  "rgb(255, 255, 0)"
+    let textColor = "rgb(255, 255, 255)"
+    return bgColor.split(",")
+}
+console.log(contrastLvl)
